@@ -1,21 +1,26 @@
-require('dotenv').config();
-
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+
 const app = express();
+const DATABASE_URL = process.env.DATABASE_URL;
 
-// Check if DATABASE_URL is undefined
-// if (!process.env.DATABASE_URL) {
-//   console.error("Error: DATABASE_URL is undefined. Make sure .env file is properly loaded.");
-//   process.exit(1); // Exit if the database URL is missing
-// }
+if (!DATABASE_URL) {
+    console.error("❌ DATABASE_URL is missing! Check Vercel Environment Variables.");
+    process.exit(1);
+}
 
-// Connect to MongoDB
-mongoose.connect(process.env.DATABASE_URL)
-  .then(() => console.log("Connected to Database"))
-  .catch((error) => console.error("MongoDB connection error:", error));
+mongoose.connect(DATABASE_URL)
+    .then(() => console.log("✅ Connected to MongoDB"))
+    .catch(error => {
+        console.error("❌ MongoDB connection error:", error.message);
+        process.exit(1);
+    });
 
-app.use(express.json())
-const subscribersRouter = require('./routes/subscribers')
-app.use('/subscribers', subscribersRouter)
-module.exports = app;
+app.use(express.json());
+
+const subscribersRouter = require("./routes/subscribers");
+app.use("/api/subscribers", subscribersRouter); // ✅ Adjusted API path
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
