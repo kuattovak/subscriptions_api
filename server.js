@@ -19,5 +19,4 @@ mongoose.connect(process.env.DATABASE_URL)
 app.use(express.json())
 const subscribersRouter = require('./routes/subscribers')
 app.use('/subscribers', subscribersRouter)
-
-app.listen(PORT, () => console.log("Server started on port 3000"));
+module.exports = app;
