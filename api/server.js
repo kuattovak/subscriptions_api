@@ -19,7 +19,7 @@ mongoose.connect(DATABASE_URL)
 
 app.use(express.json());
 
-const subscribersRouter = require("./api/routes/subscribers");
+const subscribersRouter = require("./routes/subscribers");
 app.use("/api/subscribers", subscribersRouter); // ✅ Adjusted API path
 
 const PORT = process.env.PORT || 3000;
